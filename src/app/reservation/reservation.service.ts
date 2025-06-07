@@ -8,7 +8,12 @@ export class ReservationService {
 
   private reservations: Reservation[] = []
 
-  /************** CRUD *******************/
+  constructor() {
+    let savedReservations = localStorage.getItem('reservations')
+    this.reservations = savedReservations? JSON.parse(savedReservations) : []
+  }
+
+  /************** CRUD METHODS *******************/
 
   getReservations(): Reservation[] {
     return this.reservations
@@ -20,17 +25,18 @@ export class ReservationService {
 
   addReservation(data: Reservation) {
     this.reservations.push(data)
+    localStorage.setItem('reservations', JSON.stringify(this.reservations))
   }
 
   deleteReservation(id: string): void {
     let index = this.reservations.findIndex(res => res.id === id)
     this.reservations.splice(index, 1)
+    localStorage.setItem('reservations', JSON.stringify(this.reservations))
   }
 
   updateReservation(updateReservation: Reservation) {
     let index = this.reservations.findIndex(res => res.id === updateReservation.id)
     this.reservations[index] = updateReservation
+    localStorage.setItem('reservations', JSON.stringify(this.reservations))
   }
-
-
 }
